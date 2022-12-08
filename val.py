@@ -302,7 +302,8 @@ def run(
     # Save JSON
     if save_json and len(jdict):
         w = Path(weights[0] if isinstance(weights, list) else weights).stem if weights is not None else ''  # weights
-        anno_json = str(Path('../datasets/coco/annotations/instances_val2017.json'))  # annotations
+        # anno_json = str(Path('../datasets/coco/annotations/instances_val2017.json'))  # annotations
+        anno_json = str(Path('/media/manu/kingstoo/yolov7/coco/annotations/instances_val2017.json'))  # TODO
         pred_json = str(save_dir / f"{w}_predictions.json")  # predictions
         LOGGER.info(f'\nEvaluating pycocotools mAP... saving {pred_json}...')
         with open(pred_json, 'w') as f:
