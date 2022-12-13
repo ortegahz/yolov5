@@ -310,8 +310,15 @@ class LoadImages:
         if self.transforms:
             im = self.transforms(im0)  # transforms
         else:
+            # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            # img = img[np.newaxis, ...]
+            # # img = img.transpose((2, 0, 1))  # HWC to CHW
+            # # img = img.transpose((2, 0, 1))[::-1]  # HWC to CHW, BGR to RGB
+
             im = letterbox(im0, self.img_size, stride=self.stride, auto=self.auto)[0]  # padded resize
-            im = im.transpose((2, 0, 1))[::-1]  # HWC to CHW, BGR to RGB
+            im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+            im = im[np.newaxis, ...]
+            # im = im.transpose((2, 0, 1))[::-1]  # HWC to CHW, BGR to RGB
             im = np.ascontiguousarray(im)  # contiguous
 
         return path, im, im0, self.cap, s
@@ -718,7 +725,10 @@ class LoadImagesAndLabels(Dataset):
             labels_out[:, 1:] = torch.from_numpy(labels)
 
         # Convert
-        img = img.transpose((2, 0, 1))[::-1]  # HWC to CHW, BGR to RGB
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img = img[np.newaxis, ...]
+        # img = img.transpose((2, 0, 1))  # HWC to CHW
+        # img = img.transpose((2, 0, 1))[::-1]  # HWC to CHW, BGR to RGB
         img = np.ascontiguousarray(img)
 
         return torch.from_numpy(img), labels_out, self.im_files[index], shapes
